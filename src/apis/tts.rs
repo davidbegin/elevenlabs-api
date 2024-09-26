@@ -38,6 +38,7 @@ pub trait TtsApi {
 
 impl TtsApi for Elevenlabs {
     fn tts(&self, tts_body: &TtsBody, voice_id: impl AsRef<str>) -> ApiResult<Vec<u8>> {
+        // println!("BEGIN'S CODE");
         let request_body = serde_json::to_value(tts_body).unwrap();
         self.post(
             format!("{}/{}", TEXT_TO_SPEECH, voice_id.as_ref()).as_str(),

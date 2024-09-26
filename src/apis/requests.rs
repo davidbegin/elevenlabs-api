@@ -29,17 +29,23 @@ fn handle_response(
         Ok(resp) => {
             debug!("<== ✔️\n\tDone api: {sub_url}");
 
-            assert!(resp.has("Content-Length"));
-            let len = resp
-                .header("Content-Length")
-                .unwrap()
-                .parse::<usize>()
-                .map_err(|e| Error::RequestError(e.to_string()))?;
+            println!("Response Status: {:?}", resp.status());
+            // println!("Response Status: {:?}", resp.into_string());
 
-            let mut bytes: Vec<u8> = Vec::with_capacity(len);
+            // assert!(resp.has("Content-Length"));
+            // let len = resp
+            //     .header("Content-Length")
+            //     .unwrap()
+            //     .parse::<usize>()
+            //     .map_err(|e| Error::RequestError(e.to_string()))?;
+            // let len = 100;
+
+            // let mut bytes: Vec<u8> = Vec::with_capacity(len);
+            let mut bytes: Vec<u8> = vec![];
             resp.into_reader()
                 .read_to_end(&mut bytes)
                 .map_err(|e| Error::RequestError(e.to_string()))?;
+
             Ok(bytes)
         }
         Err(err) => {
